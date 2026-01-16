@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>교사를 위한 성취기준 수업 연구소</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Noto+Sans+KR:wght@300;400;500;700&display=swap"
+        rel="stylesheet">
+    <!-- Vis.js for Graph Visualization -->
+    <script type="text/javascript" src="https://unpkg.com/vis-network/standalone/umd/vis-network.min.js"></script>
+
+    <style>
+        :root {
+            --primary: #4F46E5;
+            --primary-dark: #4338ca;
+            --secondary: #10B981;
+            --accent: #F59E0B;
+            --bg-dark: #f8fafc;
+            /* Light BG */
+            --bg-card: #ffffff;
+            /* White Card */
+            --text-main: #0f172a;
+            /* Dark Text */
+            --text-secondary: #475569;
+            /* Slate Text */
+            --gradient-1: linear-gradient(135deg, #4f46e5 0%, #9333ea 100%);
+            --subject-korean: #ec4899;
+            --subject-science: #22c55e;
+            --subject-social: #3b82f6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans KR', 'Outfit', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Layout & Utilities */
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .flex {
+            display: flex;
+        }
+
+        .justify-between {
+            justify-content: space-between;
+        }
+
+        .items-center {
+            align-items: center;
+        }
+
+        .grid {
+            display: grid;
+            gap: 24px;
+        }
+
+        .grid-cols-1 {
+            grid-template-columns: repeat(1, 1fr);
+        }
+
+        @media (min-width: 768px) {
+            .grid-cols-md-2 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .grid-cols-md-3 {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        /* Typography */
+        h1,
+        h2,
+        h3 {
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        h1 {
+            font-size: 3rem;
+            line-height: 1.2;
+            background: var(--gradient-1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        h2 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .text-sm {
+            font-size: 0.875rem;
+        }
+
+        .text-muted {
+            color: var(--text-secondary);
+        }
+
+        /* Header */
+        header {
+            padding: 2rem 0;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .logo {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .logo span {
+            color: var(--primary);
+        }
+
+        /* Hero */
+        .hero {
+            padding: 5rem 0;
+            text-align: center;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 1rem auto 2rem;
+        }
+
+        /* Subject Filter */
+        .filter-container {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background: white;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            color: var(--text-secondary);
+            padding: 0.75rem 1.5rem;
+            border-radius: 99px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .filter-btn:hover,
+        .filter-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+        }
+
+        /* Cards */
+        .card {
+            background: var(--bg-card);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            border-radius: 16px;
+            padding: 24px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, rgba(79, 70, 229, 0.2), transparent);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            border-color: rgba(79, 70, 229, 0.3);
+        }
+
+        .subject-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            width: fit-content;
+        }
+
+        .badge-korean {
+            background: rgba(236, 72, 153, 0.2);
+            color: #f472b6;
+            border: 1px solid rgba(236, 72, 153, 0.3);
+        }
+
+        .badge-science {
+            background: rgba(34, 197, 94, 0.2);
+            color: #4ade80;
+            border: 1px solid rgba(34, 197, 94, 0.3);
+        }
+
+        .badge-social {
+            background: rgba(59, 130, 246, 0.2);
+            color: #60a5fa;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+        }
+
+        .card-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-main);
+            line-height: 1.4;
+        }
+
+        .card-section {
+            margin-top: auto;
+            padding-top: 1rem;
+            border-top: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        .activity-text {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-top: 0.5rem;
+            font-weight: 500;
+        }
+
+        .activity-label {
+            color: #64748b;
+            font-size: 0.75rem;
+            display: block;
+            margin-bottom: 0.25rem;
+            font-weight: 700;
+        }
+
+        .integration-tag {
+            background: linear-gradient(90deg, rgba(245, 158, 11, 0.1), rgba(245, 158, 11, 0.05));
+            border-left: 3px solid var(--accent);
+            padding: 8px 12px;
+            margin-top: 1rem;
+            border-radius: 0 4px 4px 0;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #92400e;
+        }
+
+        .icon {
+            width: 16px;
+            height: 16px;
+            stroke: #d97706;
+            fill: none;
+        }
+
+        /* Graph Visualization Section */
+        .vis-section {
+            margin-top: 4rem;
+            background: white;
+            border-radius: 24px;
+            padding: 24px;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            position: relative;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+        }
+
+        .vis-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding: 0 1rem;
+        }
+
+        .vis-legend {
+            display: flex;
+            gap: 16px;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        #network-graph {
+            width: 100%;
+            height: 600px;
+            background: radial-gradient(circle at center, #e0e7ff 0%, #c7d2fe 100%);
+            border-radius: 16px;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+
+        /* Footer */
+        footer {
+            margin-top: 6rem;
+            padding: 3rem 0;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+            text-align: center;
+            color: var(--text-secondary);
+        }
+
+        .animate-up {
+            animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        @keyframes slideUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="container flex justify-between items-center">
+            <div class="logo">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="2">
+                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 20l10 5 10-5M2 12l10 5 10-5" />
+                </svg>
+                Edu<span>Graph</span>
+            </div>
+            <nav>
+                <a href="#" style="color:var(--text-main); text-decoration:none; margin-left: 20px; font-weight:600;">연구
+                    홈</a>
+                <a href="https://ncic.re.kr/" target="_blank"
+                    style="color:var(--text-secondary); text-decoration:none; margin-left: 20px;">NCIC 바로가기</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="hero animate-up">
+            <h1>교과 융합 지식 그래프</h1>
+            <p>
+                성취기준 데이터를 RDF 그래프로 시각화하여 교과 간의 구조적 연계를 탐색합니다.<br>
+                노드를 드래그하거나 클릭하여 상세 정보를 확인하세요.
+            </p>
+        </section>
+
+        <!-- Graph Visualization -->
+        <div class="vis-section animate-up" style="animation-delay: 0.1s;">
+            <div class="vis-header">
+                <h2 style="font-size:1.5rem; margin:0;">교과 융합 그래프</h2>
+                <div class="vis-legend">
+                    <div class="legend-item">
+                        <div class="dot" style="background:#ec4899"></div>국어
+                    </div>
+                    <div class="legend-item">
+                        <div class="dot" style="background:#22c55e"></div>과학
+                    </div>
+                    <div class="legend-item">
+                        <div class="dot" style="background:#3b82f6"></div>사회
+                    </div>
+                    <div class="legend-item">
+                        <div class="dot" style="background:#F59E0B"></div>연계(Fusion)
+                    </div>
+                </div>
+            </div>
+            <div id="network-graph"></div>
+            <p style="text-align:center; font-size:0.85rem; color: #555; margin-top:10px;">
+                * 점선 화살표는 성취기준 간의 융합(integratesWith) 관계를 나타냅니다.
+            </p>
+        </div>
+
+        <div style="margin-top: 4rem;"></div>
+
+        <!-- Filter -->
+        <div class="filter-container animate-up" style="animation-delay: 0.2s;">
+            <button class="filter-btn active" onclick="filterData('all')">전체 카드 보기</button>
+            <button class="filter-btn" onclick="filterData('국어')">국어</button>
+            <button class="filter-btn" onclick="filterData('과학')">과학</button>
+            <button class="filter-btn" onclick="filterData('사회(지리)')">사회(지리)</button>
+        </div>
+
+        <!-- Grid -->
+        <div class="grid grid-cols-1 grid-cols-md-2 grid-cols-md-3" id="cardGrid">
+            <!-- Cards will be populated by JS -->
+        </div>
+
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 EduGraph Research Lab. All rights reserved.</p>
+            <p class="text-sm" style="margin-top:1rem;">Powered by Vis.js & RDF/Turtle</p>
+        </div>
+    </footer>
+
+    <script>
+        // Data definition
+        const rdfData = [
+            { id: "nc2022:9국01-01", type: "edu:AchievementStandard", title: "화자의 의도와 관점 추론", subject: "국어", activity: "뉴스 데스크의 보도 의도 분석하기" },
+            { id: "nc2022:9국01-02", type: "edu:AchievementStandard", title: "설득 전략의 비판적 분석", subject: "국어", activity: "광고 및 강연문의 설득 기법 찾기" },
+            { id: "nc2022:9국01-03", type: "edu:AchievementStandard", title: "담화 공동체별 소통 방식", subject: "국어", activity: "세대 간/지역 간 담화 관습 비교하기" },
+            { id: "nc2022:9국01-04", type: "edu:AchievementStandard", title: "경청과 공감적 대화", subject: "국어", activity: "비폭력 대화(NVC) 실습" },
+            { id: "nc2022:9국01-05", type: "edu:AchievementStandard", title: "효과적인 면담 수행", subject: "국어", activity: "지역 사회 전문가 인터뷰 프로젝트" },
+            { id: "nc2022:9국01-06", type: "edu:AchievementStandard", title: "자료 재구성 및 발표", subject: "국어", activity: "인포그래픽을 활용한 자유 주제 발표" },
+            { id: "nc2022:9국01-07", type: "edu:AchievementStandard", title: "토의를 통한 대안 마련", subject: "국어", activity: "학급 규칙 제정을 위한 원탁 토의", integratesWith: "nc2022:9과01-03", integrationNote: "과학 연계" },
+            { id: "nc2022:9국01-08", type: "edu:AchievementStandard", title: "타당한 논증과 토론", subject: "국어", activity: "CEDA 방식의 교내 토론 대회" },
+            { id: "nc2022:9국01-09", type: "edu:AchievementStandard", title: "진솔한 표현과 갈등 조정", subject: "국어", activity: "갈등 상황 역할극 및 중재 연습" },
+            { id: "nc2022:9국01-10", type: "edu:AchievementStandard", title: "언어폭력 성찰과 존중", subject: "국어", activity: "사이버 언어폭력 예방 캠페인" },
+            { id: "nc2022:9국01-11", type: "edu:AchievementStandard", title: "듣기·말하기 과정 점검", subject: "국어" },
+
+            { id: "nc2022:9사_지리_01-01", type: "edu:AchievementStandard", title: "지역 특성 및 위치 추론", subject: "사회(지리)", activity: "구글 어스를 활용한 가상 세계 여행" },
+            { id: "nc2022:9사_지리_01-02", type: "edu:AchievementStandard", title: "지역 간 공간적 상호 작용", subject: "사회(지리)", activity: "글로벌 공급망(커피, 스마트폰) 추적하기" },
+            { id: "nc2022:9사_지리_01-03", type: "edu:AchievementStandard", title: "세계와 지역의 상호 영향", subject: "사회(지리)", activity: "기후 변화가 우리 지역 농업에 미치는 영향" },
+
+            { id: "nc2022:9과01-01", type: "edu:AchievementStandard", title: "과학적 탐구 및 문제 해결", subject: "과학", activity: "생활 속 불편함을 해결하는 발명품 설계" },
+            { id: "nc2022:9과01-02", type: "edu:AchievementStandard", title: "첨단 과학기술과 미래 사회", subject: "과학", activity: "AI 기술 도입과 미래 직업 변화", integratesWith: "nc2022:9국01-06", integrationNote: "국어 연계" },
+            { id: "nc2022:9과01-03", type: "edu:AchievementStandard", title: "지속 가능한 삶", subject: "과학", activity: "탄소 중립 실천을 위한 토의", integratesWith: "nc2022:9국01-07", integrationNote: "국어 연계" },
+            { id: "nc2022:9과02-01", type: "edu:AchievementStandard", title: "세포의 구조와 기능", subject: "과학", activity: "현미경을 이용한 식물/동물 세포 관찰" },
+            { id: "nc2022:9과02-02", type: "edu:AchievementStandard", title: "생물의 유기적 구성 단계", subject: "과학", activity: "동물/식물 구성 단계 비교 도표" },
+            { id: "nc2022:9과02-03", type: "edu:AchievementStandard", title: "변이와 생물다양성", subject: "과학", activity: "교내 식물의 변이 탐색하기" },
+            { id: "nc2022:9과02-04", type: "edu:AchievementStandard", title: "종의 개념과 분류 체계", subject: "과학", activity: "생물 분류 열쇠 만들기 실습" },
+            { id: "nc2022:9과02-05", type: "edu:AchievementStandard", title: "생물다양성 보전 방안", subject: "과학", activity: "지역 생태계 보호 홍보물 제작", integratesWith: "nc2022:9사_지리_01-03", integrationNote: "사회 연계" }
+        ];
+
+        // --- VIS.JS NETWORK GRAPH LOGIC ---
+        function initGraph() {
+            const nodes = new vis.DataSet([]);
+            const edges = new vis.DataSet([]);
+
+            // 1. Create Subject Nodes (Hubs)
+            const subjects = ["국어", "과학", "사회(지리)"];
+            const subjectColors = {
+                "국어": "#ec4899",
+                "과학": "#22c55e",
+                "사회(지리)": "#3b82f6"
+            };
+            const subjectIds = {};
+
+            subjects.forEach((subj, idx) => {
+                const id = `SUBJECT_${subj}`;
+                subjectIds[subj] = id;
+                nodes.add({
+                    id: id,
+                    label: subj,
+                    shape: 'hexagon',
+                    size: 30,
+                    color: { background: subjectColors[subj], border: 'white' },
+                    font: { size: 16, color: 'white', face: 'Outfit', bold: true },
+                    shadow: { enabled: true, color: 'rgba(0,0,0,0.5)', size: 10 }
+                });
+            });
+
+            // 2. Create Achievement Standard Nodes & Edges to Subjects
+            rdfData.forEach(item => {
+                // Node
+                nodes.add({
+                    id: item.id,
+                    label: item.title.length > 8 ? item.title.substring(0, 8) + '..' : item.title,
+                    title: `<b>${item.id}</b><br>${item.title}<br>활동: ${item.activity || '-'}`, // Tooltip
+                    shape: 'dot',
+                    size: 10,
+                    color: {
+                        background: '#ffffff',
+                        border: subjectColors[item.subject]
+                    },
+                    font: { size: 12, color: '#334155' },
+                    borderWidth: 2
+                });
+
+                // Edge: Standard -> Subject (Structural Link)
+                edges.add({
+                    from: item.id,
+                    to: subjectIds[item.subject],
+                    color: { color: subjectColors[item.subject], opacity: 0.2 },
+                    width: 1
+                });
+
+                // Edge: Integration (Inter-standard Link)
+                if (item.integratesWith) {
+                    edges.add({
+                        from: item.id,
+                        to: item.integratesWith,
+                        color: { color: '#F59E0B', opacity: 1 }, // Amber color for fusion
+                        dashes: true,
+                        width: 2,
+                        arrows: 'to',
+                        label: 'integratesWith',
+                        font: { align: 'middle', size: 10, color: '#b45309', background: 'rgba(255,255,255,0.8)' }
+                    });
+                }
+            });
+
+            // Configuration
+            const container = document.getElementById('network-graph');
+            const data = { nodes: nodes, edges: edges };
+            const options = {
+                nodes: {
+                    borderWidthSelected: 4,
+                },
+                physics: {
+                    enabled: true,
+                    barnesHut: {
+                        gravitationalConstant: -2000,
+                        centralGravity: 0.3,
+                        springLength: 95,
+                        springConstant: 0.04,
+                        damping: 0.09,
+                        avoidOverlap: 0.1
+                    },
+                    stabilization: { iterations: 150 } // Premix to settle
+                },
+                interaction: {
+                    hover: true,
+                    tooltipDelay: 200,
+                    zoomView: true
+                }
+            };
+
+            const network = new vis.Network(container, data, options);
+
+            // Optional: Click event
+            network.on("click", function (params) {
+                if (params.nodes.length > 0) {
+                    // Highlight corresponding card? (Logic omitted for brevity)
+                    console.log("Clicked node:", params.nodes[0]);
+                }
+            });
+        }
+
+        // --- CARD RENDERING LOGIC ---
+        const cardGrid = document.getElementById('cardGrid');
+
+        function getSubjectClass(subject) {
+            if (subject === '국어') return 'badge-korean';
+            if (subject === '과학') return 'badge-science';
+            if (subject === '사회(지리)') return 'badge-social';
+            return '';
+        }
+
+        function renderCards(data) {
+            cardGrid.innerHTML = '';
+            data.forEach((item, index) => {
+                const delay = (index % 10) * 0.1;
+                const card = document.createElement('div');
+                card.className = `card animate-up`;
+                card.style.animationDelay = `${delay}s`;
+
+                let integrationHtml = '';
+                if (item.integratesWith) {
+                    const linkedItem = rdfData.find(d => d.id === item.integratesWith);
+                    const linkTitle = linkedItem ? linkedItem.title : item.integratesWith;
+
+                    integrationHtml = `
+                    <div class="integration-tag">
+                        <svg class="icon" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                        <div>
+                            <span style="display:block; font-size:0.7em; opacity:0.8">연계: ${item.integrationNote || '타 교과 연계'}</span>
+                            ${linkTitle}
+                        </div>
+                    </div>
+                `;
+                }
+
+                card.innerHTML = `
+                <div>
+                    <span class="subject-badge ${getSubjectClass(item.subject)}">${item.subject}</span>
+                </div>
+                <h3 class="card-title">${item.title}</h3>
+                <div class="card-section">
+                    ${item.activity ? `
+                        <span class="activity-label">추천 활동</span>
+                        <p class="activity-text">${item.activity}</p>
+                    ` : ''}
+                </div>
+                ${integrationHtml}
+            `;
+                cardGrid.appendChild(card);
+            });
+        }
+
+        function filterData(subject) {
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            if (subject === 'all') {
+                renderCards(rdfData);
+            } else {
+                const filtered = rdfData.filter(item => item.subject === subject);
+                renderCards(filtered);
+            }
+        }
+
+        // Init
+        window.onload = function () {
+            renderCards(rdfData);
+            initGraph();
+        };
+
+    </script>
+</body>
+
+</html>
