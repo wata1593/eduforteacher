@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>교사를 위한 성취기준 수업 연구소</title>
+    <title>학교도서관 기반 중학교 교과 융합 수업 연구소</title>
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -32,6 +32,12 @@
             --subject-korean: #ec4899;
             --subject-science: #22c55e;
             --subject-social: #3b82f6;
+            --subject-library: #8b5cf6;
+            --subject-moral: #f43f5e;
+            --subject-art: #fbbf24;
+            --subject-career: #10b981;
+            --subject-info-lit: #06b6d4;
+            --subject-english: #f97316;
         }
 
         * {
@@ -242,6 +248,36 @@
             border: 1px solid rgba(59, 130, 246, 0.3);
         }
 
+        .badge-library {
+            background: rgba(139, 92, 246, 0.2);
+            color: #a78bfa;
+            border: 1px solid rgba(139, 92, 246, 0.3);
+        }
+
+        .badge-moral {
+            background: rgba(244, 63, 94, 0.2);
+            color: #fb7185;
+            border: 1px solid rgba(244, 63, 94, 0.3);
+        }
+
+        .badge-art {
+            background: rgba(251, 191, 36, 0.2);
+            color: #fbbf24;
+            border: 1px solid rgba(251, 191, 36, 0.3);
+        }
+
+        .badge-career {
+            background: rgba(16, 185, 129, 0.2);
+            color: #34d399;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .badge-info-lit {
+            background: rgba(6, 182, 212, 0.2);
+            color: #22d3ee;
+            border: 1px solid rgba(6, 182, 212, 0.3);
+        }
+
         .card-title {
             font-size: 1.25rem;
             font-weight: 600;
@@ -283,6 +319,20 @@
             color: #92400e;
         }
 
+        .lib-integration-box {
+            background: rgba(139, 92, 246, 0.05);
+            border: 1px dashed var(--subject-library);
+            padding: 12px;
+            margin-top: 1rem;
+            border-radius: 8px;
+        }
+
+        .lib-standard-item {
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px solid rgba(139, 92, 246, 0.1);
+        }
+
         .icon {
             width: 16px;
             height: 16px;
@@ -322,10 +372,16 @@
             gap: 6px;
         }
 
-        .dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
+        .badge-info-lit {
+            background: rgba(6, 182, 212, 0.2);
+            color: #22d3ee;
+            border: 1px solid rgba(6, 182, 212, 0.3);
+        }
+
+        .badge-english {
+            background: rgba(249, 115, 22, 0.2);
+            color: #fb923c;
+            border: 1px solid rgba(249, 115, 22, 0.3);
         }
 
         #network-graph {
@@ -381,7 +437,7 @@
 
     <main class="container">
         <section class="hero animate-up">
-            <h1>교과 융합 지식 그래프</h1>
+            <h1>학교도서관 기반 중학교 교과 융합 수업 연구소</h1>
             <p>
                 성취기준 데이터를 RDF 그래프로 시각화하여 교과 간의 구조적 연계를 탐색합니다.<br>
                 노드를 드래그하거나 클릭하여 상세 정보를 확인하세요.
@@ -400,16 +456,31 @@
                         <div class="dot" style="background:#22c55e"></div>과학
                     </div>
                     <div class="legend-item">
-                        <div class="dot" style="background:#3b82f6"></div>사회
+                        <div class="dot" style="background:#8b5cf6"></div>도서관
                     </div>
                     <div class="legend-item">
-                        <div class="dot" style="background:#F59E0B"></div>연계(Fusion)
+                        <div class="dot" style="background:#f43f5e"></div>도덕
+                    </div>
+                    <div class="legend-item">
+                        <div class="dot" style="background:#fbbf24"></div>미술
+                    </div>
+                    <div class="legend-item">
+                        <div class="dot" style="background:#10b981"></div>진로
+                    </div>
+                    <div class="legend-item">
+                        <div class="dot" style="background:#06b6d4"></div>정보활용
+                    </div>
+                    <div class="legend-item">
+                        <div class="dot" style="background:#f97316"></div>영어
+                    </div>
+                    <div class="legend-item">
+                        <div class="dot" style="background:#F59E0B"></div>융합 및 연계
                     </div>
                 </div>
             </div>
             <div id="network-graph"></div>
             <p style="text-align:center; font-size:0.85rem; color: #555; margin-top:10px;">
-                * 점선 화살표는 성취기준 간의 융합(integratesWith) 관계를 나타냅니다.
+                * 점선 화살표는 성취기준 간의 융합 및 연계 관계를 나타냅니다.
             </p>
         </div>
 
@@ -421,6 +492,13 @@
             <button class="filter-btn" onclick="filterData('국어')">국어</button>
             <button class="filter-btn" onclick="filterData('과학')">과학</button>
             <button class="filter-btn" onclick="filterData('사회(지리)')">사회(지리)</button>
+            <button class="filter-btn" onclick="filterData('일반사회')">일반사회</button>
+            <button class="filter-btn" onclick="filterData('도서관(융합독서)')">도서관</button>
+            <button class="filter-btn" onclick="filterData('도덕')">도덕</button>
+            <button class="filter-btn" onclick="filterData('미술')">미술</button>
+            <button class="filter-btn" onclick="filterData('진로')">진로</button>
+            <button class="filter-btn" onclick="filterData('도서관(정보활용)')">정보활용</button>
+            <button class="filter-btn" onclick="filterData('영어')">영어</button>
         </div>
 
         <!-- Grid -->
@@ -432,7 +510,7 @@
 
     <footer>
         <div class="container">
-            <p>&copy; 2026 EduGraph Research Lab. All rights reserved.</p>
+            <p>&copy; 2026 박보경. All rights reserved.</p>
             <p class="text-sm" style="margin-top:1rem;">Powered by Vis.js & RDF/Turtle</p>
         </div>
     </footer>
@@ -440,30 +518,64 @@
     <script>
         // Data definition
         const rdfData = [
+            // 국어 (주요 항목 위주로 구성)
             { id: "nc2022:9국01-01", type: "edu:AchievementStandard", title: "화자의 의도와 관점 추론", subject: "국어", activity: "뉴스 데스크의 보도 의도 분석하기" },
             { id: "nc2022:9국01-02", type: "edu:AchievementStandard", title: "설득 전략의 비판적 분석", subject: "국어", activity: "광고 및 강연문의 설득 기법 찾기" },
-            { id: "nc2022:9국01-03", type: "edu:AchievementStandard", title: "담화 공동체별 소통 방식", subject: "국어", activity: "세대 간/지역 간 담화 관습 비교하기" },
-            { id: "nc2022:9국01-04", type: "edu:AchievementStandard", title: "경청과 공감적 대화", subject: "국어", activity: "비폭력 대화(NVC) 실습" },
-            { id: "nc2022:9국01-05", type: "edu:AchievementStandard", title: "효과적인 면담 수행", subject: "국어", activity: "지역 사회 전문가 인터뷰 프로젝트" },
             { id: "nc2022:9국01-06", type: "edu:AchievementStandard", title: "자료 재구성 및 발표", subject: "국어", activity: "인포그래픽을 활용한 자유 주제 발표" },
-            { id: "nc2022:9국01-07", type: "edu:AchievementStandard", title: "토의를 통한 대안 마련", subject: "국어", activity: "학급 규칙 제정을 위한 원탁 토의", integratesWith: "nc2022:9과01-03", integrationNote: "과학 연계" },
-            { id: "nc2022:9국01-08", type: "edu:AchievementStandard", title: "타당한 논증과 토론", subject: "국어", activity: "CEDA 방식의 교내 토론 대회" },
-            { id: "nc2022:9국01-09", type: "edu:AchievementStandard", title: "진솔한 표현과 갈등 조정", subject: "국어", activity: "갈등 상황 역할극 및 중재 연습" },
-            { id: "nc2022:9국01-10", type: "edu:AchievementStandard", title: "언어폭력 성찰과 존중", subject: "국어", activity: "사이버 언어폭력 예방 캠페인" },
-            { id: "nc2022:9국01-11", type: "edu:AchievementStandard", title: "듣기·말하기 과정 점검", subject: "국어" },
+            { id: "nc2022:9국03-09", type: "edu:AchievementStandard", title: "윤리적 소통 문화 형성", subject: "국어", activity: "온라인 커뮤니티 언어 예절 캠페인" },
+            { id: "nc2022:9국04-08", type: "edu:AchievementStandard", title: "언어와 자아·세계 관계 인식", subject: "국어", activity: "나의 언어 습관 성찰 일기 쓰기" },
+            { id: "nc2022:9국06-03", type: "edu:AchievementStandard", title: "영상 매체 자료 제작", subject: "국어", activity: "북트레일러 또는 공익광고 영상 제작" },
 
-            { id: "nc2022:9사_지리_01-01", type: "edu:AchievementStandard", title: "지역 특성 및 위치 추론", subject: "사회(지리)", activity: "구글 어스를 활용한 가상 세계 여행" },
-            { id: "nc2022:9사_지리_01-02", type: "edu:AchievementStandard", title: "지역 간 공간적 상호 작용", subject: "사회(지리)", activity: "글로벌 공급망(커피, 스마트폰) 추적하기" },
-            { id: "nc2022:9사_지리_01-03", type: "edu:AchievementStandard", title: "세계와 지역의 상호 영향", subject: "사회(지리)", activity: "기후 변화가 우리 지역 농업에 미치는 영향" },
-
+            // 과학 (주요 항목 위주로 구성)
             { id: "nc2022:9과01-01", type: "edu:AchievementStandard", title: "과학적 탐구 및 문제 해결", subject: "과학", activity: "생활 속 불편함을 해결하는 발명품 설계" },
-            { id: "nc2022:9과01-02", type: "edu:AchievementStandard", title: "첨단 과학기술과 미래 사회", subject: "과학", activity: "AI 기술 도입과 미래 직업 변화", integratesWith: "nc2022:9국01-06", integrationNote: "국어 연계" },
-            { id: "nc2022:9과01-03", type: "edu:AchievementStandard", title: "지속 가능한 삶", subject: "과학", activity: "탄소 중립 실천을 위한 토의", integratesWith: "nc2022:9국01-07", integrationNote: "국어 연계" },
-            { id: "nc2022:9과02-01", type: "edu:AchievementStandard", title: "세포의 구조와 기능", subject: "과학", activity: "현미경을 이용한 식물/동물 세포 관찰" },
-            { id: "nc2022:9과02-02", type: "edu:AchievementStandard", title: "생물의 유기적 구성 단계", subject: "과학", activity: "동물/식물 구성 단계 비교 도표" },
-            { id: "nc2022:9과02-03", type: "edu:AchievementStandard", title: "변이와 생물다양성", subject: "과학", activity: "교내 식물의 변이 탐색하기" },
-            { id: "nc2022:9과02-04", type: "edu:AchievementStandard", title: "종의 개념과 분류 체계", subject: "과학", activity: "생물 분류 열쇠 만들기 실습" },
-            { id: "nc2022:9과02-05", type: "edu:AchievementStandard", title: "생물다양성 보전 방안", subject: "과학", activity: "지역 생태계 보호 홍보물 제작", integratesWith: "nc2022:9사_지리_01-03", integrationNote: "사회 연계" }
+            { id: "nc2022:9과01-02", type: "edu:AchievementStandard", title: "첨단 과학기술과 미래 사회", subject: "과학", activity: "AI 기술 도입과 미래 직업 변화", integratesWith: "nc2022:9진로02-01", integrationNote: "진로 연계" },
+            { id: "nc2022:9과15-04", type: "edu:AchievementStandard", title: "우주탐사의 의의와 영향", subject: "과학", activity: "우주 시대의 인류 문명 토론" },
+            { id: "nc2022:9과22-02", type: "edu:AchievementStandard", title: "재해·재난 대비 및 대처", subject: "과학", activity: "우리 학교 재난 대응 매뉴얼 만들기" },
+            { id: "nc2022:9과23-01", type: "edu:AchievementStandard", title: "과학 관련 직업 탐색", subject: "과학", activity: "현대 과학 기술 관련 직업 인터뷰" },
+
+            // 사회(지리)
+            { id: "nc2022:9사_지리_01-01", type: "edu:AchievementStandard", title: "지역 특성 및 위치 추론", subject: "사회(지리)", activity: "도서관의 지리 전문 정보원(지도, 백과사전, 여행기)을 활용한 지역 특성 조사", integratesWith: "nc2022:9도정0203", integrationNote: "도서관 연계: 다양한 지리 정보원 활용" },
+            { id: "nc2022:9사_지리_11-03", type: "edu:AchievementStandard", title: "한반도 평화와 통일 미래", subject: "사회(지리)", activity: "학교도서관 통일·북한 관련 주제 서가 탐방 및 평화 통일 미래 구상 독서 프로젝트", integratesWith: "nc2022:9융독01-05", integrationNote: "도서관 연계: 주제별 독서자료 선택 및 선택" },
+            { id: "nc2022:9사_지리_12-02", type: "edu:AchievementStandard", title: "지속가능한 발전 실천", subject: "사회(지리)", activity: "도서관 정보를 활용한 글로벌 환경 이슈 팩트체크 및 지속가능 발전 제안서 작성", integratesWith: "nc2022:9도정0303", integrationNote: "도서관 연계: 환경 이슈 비판적 평가" },
+
+            // 일반사회
+            { id: "nc2022:9사_일사_01-01", type: "edu:AchievementStandard", title: "사회화와 자아 정체성", subject: "일반사회", activity: "학교도서관 생애사 도서 탐독 후 나의 자아 정체성 에세이 작성", integratesWith: "nc2022:9융독01-02", integrationNote: "도서관 연계: 도서관 자원의 자아 탐색 활용" },
+            { id: "nc2022:9사_일사_02-02", type: "edu:AchievementStandard", title: "미디어 문화·정보 비판적 검토", subject: "일반사회", activity: "도서관 정보판별 기준을 활용한 온라인 뉴스 신뢰성 및 편향성 검토 프로젝트", integratesWith: "nc2022:9도정0303", integrationNote: "도서관 연계: 가짜 뉴스 및 미디어 비판적 평가" },
+            { id: "nc2022:9사_일사_03-03", type: "edu:AchievementStandard", title: "민주주의 발전과 시민 역할", subject: "일반사회", activity: "도서관 아카이브(신문, 잡지 등)를 활용한 현대 민주주의 쟁점 분석 보고서", integratesWith: "nc2022:9도정0203", integrationNote: "도서관 연계: 다양한 정보원을 활용한 사회 문제 탐구" },
+
+            // 도덕
+            { id: "nc2022:9도01-01", type: "edu:AchievementStandard", title: "자아 이해와 도덕적 가천", subject: "도덕", activity: "나의 가치관 나무 만들기", integratesWith: "nc2022:9융독01-05", integrationNote: "도서관 연계" },
+            { id: "nc2022:9도02-03", type: "edu:AchievementStandard", title: "가상공간 도덕 문제 해결", subject: "도덕", activity: "사이버 불링 예방 가이드라인 제작", integratesWith: "nc2022:9국03-09", integrationNote: "국어 연계" },
+            { id: "nc2022:9도03-03", type: "edu:AchievementStandard", title: "북한 이해와 통일 의미", subject: "도덕", activity: "남북한 문화 차이 극복 프로젝트" },
+            { id: "nc2022:9도03-07", type: "edu:AchievementStandard", title: "과학기술과 윤리적 쟁점", subject: "도덕", activity: "자율주행 자동차의 윤리적 딜레마 토론", integratesWith: "nc2022:9과01-02", integrationNote: "과학 연계" },
+
+            // 미술
+            { id: "nc2022:9미01-02", type: "edu:AchievementStandard", title: "시각 문화와 이미지 해석", subject: "미술", activity: "도서관 시각 미디어(잡지, 화보, 영상)를 활용한 이미지의 상징성과 메시지 비판적 분석", integratesWith: "nc2022:9도정0302", integrationNote: "도서관 연계: 정보의 내용적 성격에 따른 분석 및 감상" },
+            { id: "nc2022:9미01-04", type: "edu:AchievementStandard", title: "삶과 미술의 연결", subject: "미술", activity: "도서관의 공공 디자인 및 예술 전문 도서를 탐구하여 우리 학교 도서관 공간 개선 제안서 작성", integratesWith: "nc2022:9융독01-02", integrationNote: "도서관 연계: 도서관 자원의 교과 탐구 활용" },
+            { id: "nc2022:9미02-03", type: "edu:AchievementStandard", title: "매체 활용 표현", subject: "미술", activity: "디지털 도구 및 AI 예술 도구를 활용한 정보 시각화(인포그래픽) 창작 및 공유", integratesWith: "nc2022:9도정0404", integrationNote: "도서관 연계: 생성형 AI 이해와 활용" },
+
+            // 진로
+            { id: "nc2022:9진로01-02", type: "edu:AchievementStandard", title: "자신의 진로 특성 파악", subject: "진로", activity: "진로 심리 검사 결과 분석 및 성찰", integratesWith: "nc2022:9융독01-05", integrationNote: "도서관 연계: 독서 흥미 분석 기반 진로 탐색" },
+            { id: "nc2022:9진로02-01", type: "edu:AchievementStandard", title: "직업 세계의 변화 이해", subject: "진로", activity: "학교도서관 미래 직업 잡지 및 단행본 북큐레이션 전시", integratesWith: "nc2022:9융독01-02", integrationNote: "도서관 연계: 직업 탐구 자료 목록 작성" },
+            { id: "nc2022:9진로03-03", type: "edu:AchievementStandard", title: "자기 주도적 학습 계획", subject: "진로", activity: "도서관 정보탐구과정을 활용한 자기주도 학습법 탐구 및 계획", integratesWith: "nc2022:9융독02-03", integrationNote: "도서관 연계: 정보 탐구 전략 수립" },
+
+            // 도서관(융합독서)
+            { id: "nc2022:9융독01-02", type: "edu:AchievementStandard", title: "도서관 자원 교과 활용", subject: "도서관(융합독서)", activity: "교과 프로젝트를 위한 도서관 자료 목록(Pathfinder) 작성" },
+            { id: "nc2022:9융독02-06", type: "edu:AchievementStandard", title: "정보 탐색 및 수집·종합", subject: "도서관(융합독서)", activity: "복합 정보원 기반 보고서 작성 자료 수집", integratesWith: "nc2022:9국01-06", integrationNote: "국어 연계" },
+            { id: "nc2022:9융독03-04", type: "edu:AchievementStandard", title: "디지털 정보 비판적 선별", subject: "도서관(융합독서)", activity: "팩트체크: 가짜 뉴스 판별 실습", integratesWith: "nc2022:9국01-01", integrationNote: "국어 연계" },
+
+            // 도서관(정보활용) - 도정
+            { id: "nc2022:9도정0103", type: "edu:AchievementStandard", title: "도서관 역할 및 서비스 활용", subject: "도서관(정보활용)", activity: "우리 학교 도서관 200% 활용 가이드 제작" },
+            { id: "nc2022:9도정0203", type: "edu:AchievementStandard", title: "정보원 유형 이해 및 활용", subject: "도서관(정보활용)", activity: "주제별 최적 정보원(사전, DB, 논문) 찾기 대항전" },
+            { id: "nc2022:9도정0303", type: "edu:AchievementStandard", title: "비판적 평가 및 가짜뉴스 판별", subject: "도서관(정보활용)", activity: "딥페이크 및 가짜 뉴스 판별 체크리스트 만들기", integratesWith: "nc2022:9사_일사_02-02", integrationNote: "일반사회 연계" },
+            { id: "nc2022:9도정0404", type: "edu:AchievementStandard", title: "생성형 AI 이해와 활용", subject: "도서관(정보활용)", activity: "AI 프롬프트 엔지니어링 실습 및 윤리 토론", integratesWith: "nc2022:9과01-02", integrationNote: "과학 연계" },
+            { id: "nc2022:9도정0504", type: "edu:AchievementStandard", title: "디지털 시민성 실천", subject: "도서관(정보활용)", activity: "깨끗한 SNS 문화를 위한 캠페인 기획", integratesWith: "nc2022:9도02-03", integrationNote: "도덕 연계" },
+
+            // 영어
+            { id: "nc2022:9영01-02", type: "edu:AchievementStandard", title: "담화나 글에서 세부 정보 파악", subject: "영어", activity: "학교도서관 영미 문학 원서 독해를 통한 세부 정보 파악 및 북 리포트 작성", integratesWith: "nc2022:9융독01-02", integrationNote: "도서관 연계: 원서 자료 활용" },
+            { id: "nc2022:9영01-06", type: "edu:AchievementStandard", title: "화자나 필자의 의도나 목적 추론", subject: "영어", activity: "영어 뉴스 기사 및 칼럼 분석을 통한 작성자 의도 파악하기", integratesWith: "nc2022:9국01-01", integrationNote: "국어 연계: 비판적 읽기" },
+            { id: "nc2022:9영02-09", type: "edu:AchievementStandard", title: "정보 윤리 준수하며 말하기·쓰기", subject: "영어", activity: "영어권 미디어 리터러시 자료 분석 및 디지털 시민성 캠페인 포스터 제작", integratesWith: "nc2022:9도정0504", integrationNote: "도서관 연계: 디지털 시민성" },
+            { id: "nc2022:9영02-10", type: "edu:AchievementStandard", title: "상황이나 목적에 맞는 표현 전략", subject: "영어", activity: "도서관의 영어 표현 가이드를 활용한 주제 탐구 결과 발표", integratesWith: "nc2022:9도정0203", integrationNote: "도서관 연계: 정보 활용 및 표현" }
         ];
 
         // --- VIS.JS NETWORK GRAPH LOGIC ---
@@ -472,11 +584,18 @@
             const edges = new vis.DataSet([]);
 
             // 1. Create Subject Nodes (Hubs)
-            const subjects = ["국어", "과학", "사회(지리)"];
+            const subjects = ["국어", "과학", "사회(지리)", "일반사회", "도서관(융합독서)", "도서관(정보활용)", "도덕", "미술", "진로", "영어"];
             const subjectColors = {
                 "국어": "#ec4899",
                 "과학": "#22c55e",
-                "사회(지리)": "#3b82f6"
+                "사회(지리)": "#3b82f6",
+                "일반사회": "#6366f1",
+                "도서관(융합독서)": "#8b5cf6",
+                "도서관(정보활용)": "#06b6d4",
+                "도덕": "#f43f5e",
+                "미술": "#fbbf24",
+                "진로": "#10b981",
+                "영어": "#f97316"
             };
             const subjectIds = {};
 
@@ -487,28 +606,39 @@
                     id: id,
                     label: subj,
                     shape: 'hexagon',
-                    size: 30,
+                    size: 45,
                     color: { background: subjectColors[subj], border: 'white' },
-                    font: { size: 16, color: 'white', face: 'Outfit', bold: true },
-                    shadow: { enabled: true, color: 'rgba(0,0,0,0.5)', size: 10 }
+                    font: { size: 22, color: 'white', face: 'Outfit', bold: true, strokeWidth: 4, strokeColor: subjectColors[subj] },
+                    shadow: { enabled: true, color: 'rgba(0,0,0,0.3)', size: 10 }
                 });
             });
 
             // 2. Create Achievement Standard Nodes & Edges to Subjects
             rdfData.forEach(item => {
+                // Label formatting - show more text if possible
+                const displayLabel = item.title.length > 12 ? item.title.substring(0, 10) + '..' : item.title;
+
                 // Node
                 nodes.add({
                     id: item.id,
-                    label: item.title.length > 8 ? item.title.substring(0, 8) + '..' : item.title,
+                    label: displayLabel,
                     title: `<b>${item.id}</b><br>${item.title}<br>활동: ${item.activity || '-'}`, // Tooltip
                     shape: 'dot',
-                    size: 10,
+                    size: 15,
                     color: {
                         background: '#ffffff',
                         border: subjectColors[item.subject]
                     },
-                    font: { size: 12, color: '#334155' },
-                    borderWidth: 2
+                    font: {
+                        size: 15,
+                        color: '#1e293b',
+                        face: 'Noto Sans KR',
+                        bold: true,
+                        background: 'rgba(255,255,255,0.7)',
+                        strokeWidth: 2,
+                        strokeColor: '#ffffff'
+                    },
+                    borderWidth: 3
                 });
 
                 // Edge: Standard -> Subject (Structural Link)
@@ -526,10 +656,10 @@
                         to: item.integratesWith,
                         color: { color: '#F59E0B', opacity: 1 }, // Amber color for fusion
                         dashes: true,
-                        width: 2,
+                        width: 3,
                         arrows: 'to',
-                        label: 'integratesWith',
-                        font: { align: 'middle', size: 10, color: '#b45309', background: 'rgba(255,255,255,0.8)' }
+                        label: '융합 및 연계',
+                        font: { align: 'middle', size: 13, color: '#92400e', bold: true, background: 'rgba(255,255,255,0.9)', strokeWidth: 2, strokeColor: '#ffffff' }
                     });
                 }
             });
@@ -544,14 +674,14 @@
                 physics: {
                     enabled: true,
                     barnesHut: {
-                        gravitationalConstant: -2000,
-                        centralGravity: 0.3,
-                        springLength: 95,
-                        springConstant: 0.04,
+                        gravitationalConstant: -4000, // Increase repulsion
+                        centralGravity: 0.2,
+                        springLength: 150, // More space
+                        springConstant: 0.05,
                         damping: 0.09,
-                        avoidOverlap: 0.1
+                        avoidOverlap: 0.5 // Strongly avoid overlap
                     },
-                    stabilization: { iterations: 150 } // Premix to settle
+                    stabilization: { iterations: 200 }
                 },
                 interaction: {
                     hover: true,
@@ -578,6 +708,13 @@
             if (subject === '국어') return 'badge-korean';
             if (subject === '과학') return 'badge-science';
             if (subject === '사회(지리)') return 'badge-social';
+            if (subject === '일반사회') return 'badge-social';
+            if (subject === '도서관(융합독서)') return 'badge-library';
+            if (subject === '도서관(정보활용)') return 'badge-info-lit';
+            if (subject === '도덕') return 'badge-moral';
+            if (subject === '미술') return 'badge-art';
+            if (subject === '진로') return 'badge-career';
+            if (subject === '영어') return 'badge-english';
             return '';
         }
 
@@ -589,20 +726,49 @@
                 card.className = `card animate-up`;
                 card.style.animationDelay = `${delay}s`;
 
+                // Logic to find Library(Fusion Reading/Info Literacy) standards related to THIS card
+                let libraryLinkHtml = '';
+                if (item.subject !== '도서관(융합독서)' && item.subject !== '도서관(정보활용)') {
+                    const relatedLibStandards = rdfData.filter(d =>
+                        (d.subject === '도서관(융합독서)' || d.subject === '도서관(정보활용)') &&
+                        (d.integratesWith === item.id || item.integratesWith === d.id)
+                    );
+
+                    if (relatedLibStandards.length > 0) {
+                        libraryLinkHtml = `
+                            <div class="lib-integration-box">
+                                <span class="activity-label" style="color:var(--subject-library); display:flex; align-items:center; gap:4px;">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                                    도서관 협력 수업 연계 성취기준
+                                </span>
+                                ${relatedLibStandards.map(lib => `
+                                    <div class="lib-standard-item">
+                                        <span class="text-sm" style="font-weight:700; color:var(--text-main); display:block;">[${lib.id.split(':').pop()}] ${lib.title}</span>
+                                        <p class="text-sm text-muted" style="margin-top:2px; font-size:0.85rem;">관련 활동: ${lib.activity}</p>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        `;
+                    }
+                }
+
                 let integrationHtml = '';
                 if (item.integratesWith) {
                     const linkedItem = rdfData.find(d => d.id === item.integratesWith);
                     const linkTitle = linkedItem ? linkedItem.title : item.integratesWith;
+                    const isLibLink = linkedItem && (linkedItem.subject === '도서관(융합독서)' || linkedItem.subject === '도서관(정보활용)');
 
-                    integrationHtml = `
-                    <div class="integration-tag">
-                        <svg class="icon" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                        <div>
-                            <span style="display:block; font-size:0.7em; opacity:0.8">연계: ${item.integrationNote || '타 교과 연계'}</span>
-                            ${linkTitle}
+                    if (!isLibLink || (item.subject === '도서관(융합독서)' || item.subject === '도서관(정보활용)')) {
+                        integrationHtml = `
+                        <div class="integration-tag">
+                            <svg class="icon" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            <div>
+                                <span style="display:block; font-size:0.7em; opacity:0.8">융합 및 연계: ${item.integrationNote || '타 교과 연계'}</span>
+                                ${linkTitle}
+                            </div>
                         </div>
-                    </div>
-                `;
+                    `;
+                    }
                 }
 
                 card.innerHTML = `
@@ -616,6 +782,7 @@
                         <p class="activity-text">${item.activity}</p>
                     ` : ''}
                 </div>
+                ${libraryLinkHtml}
                 ${integrationHtml}
             `;
                 cardGrid.appendChild(card);
